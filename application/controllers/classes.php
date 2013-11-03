@@ -63,5 +63,15 @@ class Classes extends CI_Controller {
     $this->load->view('classes/view_all', $data);
     $this->load->view('foot');
   }
+  
+  function _view_by_id($id) {
+    $class = $this->Class_model->list_classes(array($id))[0];
+    $data['title'] = 'Level '.$class->level.' '.$class->type;
+    $data['class'] = $class;
+    $data['id'] = $id;
+    $this->load->view('head', $data);
+    $this->load->view('classes/view_individual', $data);
+    $this->load->view('foot');
+  }
 }
 
