@@ -12,6 +12,7 @@ class Class_model extends CI_Model {
   // $id_arr is an array of class IDs to return. If NULL, all classes
   // will be returned.
   function list_classes($id_arr = NULL) {
+    $this->db->select("id, level, type, TIME_FORMAT(time, '%H:%i') AS time, term_begins", FALSE);
     if($id_arr) {
       foreach ($id_arr as $key => $value) {
         $this->db->or_where('id', $value);
@@ -19,7 +20,8 @@ class Class_model extends CI_Model {
     }
     $this->db->order_by('term_begins', 'asc')->order_by('type', 'asc');
     $this->db->order_by('level', 'asc')->order_by('time', 'asc');
-    return $this->db->get('classes')->result();
+    
+    return $this->db->get("classes")->result();
   }
   
   function add_class($form_data) {
