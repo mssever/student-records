@@ -18,9 +18,10 @@ class Welcome extends CI_Controller {
    * @see http://codeigniter.com/user_guide/general/urls.html
    */
   public function index() {
-  	//$this->load->model('Class');
-  	//$classes = $this->Class->list_classes();
+    $data['title'] = 'Student Records';
+    $this->load->view('head', $data);
   	$this->load->view('home');
+  	$this->load->view('foot');
   }
 }
 

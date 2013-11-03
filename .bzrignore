@@ -1,2 +1,6 @@
 .gitignore
 .travis.yml
+application/logs
+application/logs/index.html
+application/logs/log-2013-11-02.php
+application/logs/log-2013-11-03.php
