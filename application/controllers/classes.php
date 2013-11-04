@@ -56,8 +56,48 @@ class Classes extends CI_Controller {
     $this->load->view('foot');
   }
   
+  function attendance($class_id) {
+    $this->load->model('Class_model');
+    $this->load->model('Students_model');
+    $this->load->helper('form');
+    
+    $students = $this->Students_model->list_students_by_class($class_id);
+    $i = 0;
+    $data['students'] = array();
+    foreach ($students as $key => $student) {
+      $data['students'][$i]['id'] = $student->id;
+      $data['students'][$i]['full_name'] = $student->full_name;
+      $data['students'][$i]['first_name'] = $student->first_name;
+      $data['students'][$i]['nickname'] = $student->nickname;
+      $data['students'][$i]['attendance'] = $this->Students_model->get_attendance($student->id, $class_id);
+      $i++;
+    }
+    $data['title'] = 'Attendance';
+    $data['class_description'] = $this->Class_model->class_description_by_id($class_id);
+    $data['class_id'] = $class_id;
+    $data['attendance_options'] = array('Present'=>'P','Absent'=>'A','Tardy'=>'T');
+    
+    $this->load->view('head', $data);
+    $this->load->view('classes/attendance', $data);
+    $this->load->view('foot');
+  }
+  
+  function update_attendance($class_id) {
+    $this->load->model('Students_model');
+    
+    $form = $this->input->post(NULL,TRUE);
+    foreach ($form['student'] as $student_id => $attendance) {
+      $attendance_data[] = array('student_id'=>$student_id,'attendance'=>$attendance);
+    }
+    $this->Students_model->add_class_attendance($class_id, $form['date'], $attendance_data);
+    redirect('classes/attendance/'.$class_id);
+  }
+  
   function _view_all() {
     $data['classes'] = $this->Class_model->list_classes();
+    foreach ($data['classes'] as $key => $cls) {
+      $data['classes_text'][] = array('id'=>$cls->id, 'desc'=>$this->Class_model->class_description($cls));
+    }
     $data['title'] = 'All Classes';
     $this->load->view('head', $data);
     $this->load->view('classes/view_all', $data);

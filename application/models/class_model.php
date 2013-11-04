@@ -14,6 +14,7 @@ class Class_model extends CI_Model {
   function list_classes($id_arr = NULL) {
     $this->db->select("id, level, type, TIME_FORMAT(time, '%H:%i') AS time, term_begins", FALSE);
     if($id_arr) {
+      if(!is_array($id_arr)) $id_arr = array($id_arr);
       foreach ($id_arr as $key => $value) {
         $this->db->or_where('id', $value);
       }
@@ -44,6 +45,24 @@ class Class_model extends CI_Model {
       die();
     }
     return $id;
+  }
+  
+  function class_description($class_obj) {
+    return $class_obj->time.' Level '.$class_obj->level.' '.$class_obj->type.' class beginning on '.$class_obj->term_begins;
+  }
+  
+  function class_description_by_id($class_id) {
+    return $this->class_description($this->list_classes($class_id)[0]);
+  }
+  
+  function add_student_to_class($class_id, $student_id) {
+    $sql = 'INSERT INTO class_roster (class_id, student_id) VALUES (?, ?)';
+    $this->db->query($sql, array($class_id, $student_id));
+  }
+  
+  function remove_student_from_class($class_id, $student_id) {
+    $sql = 'DELETE FROM class_roster WHERE class_id = ? AND student_id = ?';
+    $this->db->query($sql, array($class_id, $student_id));
   }
 }
 

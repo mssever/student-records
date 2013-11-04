@@ -1,4 +1,4 @@
-<table border=1>
+<table>
   <tr>
     <th>Term Begins</th>
     <th>Class Type</th>

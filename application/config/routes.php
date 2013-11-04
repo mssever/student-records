@@ -40,6 +40,7 @@
 
 $route['default_controller'] = "welcome";
 $route['404_override'] = '';
+$route['students/class/([0-9]+)'] = 'students/esl_class/$1';
 
 
 /* End of file routes.php */

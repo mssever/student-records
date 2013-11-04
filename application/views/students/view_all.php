@@ -1,17 +1,20 @@
 <? if ($add_success) { ?>
   <h2><?=$add_success?></h2>
 <? } ?>
-<table border=0>
+<table>
   <tr>
+    <th>&nbsp;</th>
     <th>Name</th>
     <th>Nickname</th>
     <th>Classes</th>
     <th>Operations</th>
   </tr>
+  <? $i = 1; ?>
   <? foreach ($students as $key => $student) { ?>
     <tr>
+      <td><?=$i++?></td>
       <td><?=anchor('students/view/'.$student->id, $student->full_name)?></td>
-      <td><?=($student->nickname) ? $student->nickname : $student->first_name?></td>
+      <td><?=$student->nickname?></td>
       <td>&nbsp;<!-- Insert Classes Here --></td>
       <td><?=anchor('students/edit/'.$student->id,'edit')?> <?=anchor('students/delete/'.$student->id,'delete')?></td>
     </tr>
