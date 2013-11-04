@@ -12,6 +12,9 @@
     table {
       border: solid black 2px;
     }
+    tr.even {
+      background: #ddd;
+    }
     th, td {
       border: solid 1px black;
       text-align: left;

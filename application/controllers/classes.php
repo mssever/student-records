@@ -76,6 +76,8 @@ class Classes extends CI_Controller {
     $data['class_description'] = $this->Class_model->class_description_by_id($class_id);
     $data['class_id'] = $class_id;
     $data['attendance_options'] = array('Present'=>'P','Absent'=>'A','Tardy'=>'T');
+    $data['attendance_dates'] = $this->Class_model->get_attendance_dates($class_id);
+    $data['attendance_dummy'] = new AttendanceDummyClass();
     
     $this->load->view('head', $data);
     $this->load->view('classes/attendance', $data);
@@ -112,6 +114,19 @@ class Classes extends CI_Controller {
     $this->load->view('head', $data);
     $this->load->view('classes/view_individual', $data);
     $this->load->view('foot');
+  }
+}
+
+/**
+ * classname:  AttendanceDummyClass
+ * This is used by the attendance system to substitute for the case when a student
+ * has no records yet.
+ */
+
+class AttendanceDummyClass   {
+  function __construct () {
+    $this->date = NULL;
+    $this->attendance = NULL;
   }
 }
 

@@ -64,5 +64,10 @@ class Class_model extends CI_Model {
     $sql = 'DELETE FROM class_roster WHERE class_id = ? AND student_id = ?';
     $this->db->query($sql, array($class_id, $student_id));
   }
+  
+  function get_attendance_dates($class_id) {
+    $sql = "SELECT DISTINCT `date` FROM `attendance` WHERE `class_id` = ? ORDER BY `date`";
+    return $this->db->query($sql, array($class_id))->result();
+  }
 }
 

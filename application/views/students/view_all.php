@@ -11,7 +11,7 @@
   </tr>
   <? $i = 1; ?>
   <? foreach ($students as $key => $student) { ?>
-    <tr>
+    <tr class="<?=($i % 2 == 0) ? 'even' : 'odd'?>">
       <td><?=$i++?></td>
       <td><?=anchor('students/view/'.$student->id, $student->full_name)?></td>
       <td><?=$student->nickname?></td>

@@ -29,7 +29,7 @@ class Students extends CI_Controller {
     $not_in_class = $this->Students_model->list_students_not_in_class($class_id);
     $data['students_not_in_class'][0] = '';
     foreach ($not_in_class as $key => $student) {
-      $data['students_not_in_class'][$student->id] = $student->full_name;
+      $data['students_not_in_class'][$student->id] = $student->nickname.' ('.$student->full_name.')';
     }
     $data['class'] = $this->Class_model->class_description($this->Class_model->list_classes($class_id)[0]);
     
@@ -45,6 +45,16 @@ class Students extends CI_Controller {
       $this->Class_model->add_student_to_class($class_id, $form['student_id']);
     }
     redirect('students/class/'.$class_id);
+  }
+  
+  function add_student_with_class() {
+    $this->load->model('Students_model');
+    $this->load->model('Class_model');
+    $form = $this->input->post(NULL,TRUE);
+    $class_id = $form['class_id'];
+    $student_id = $this->Students_model->add_student($form);
+    $this->Class_model->add_student_to_class($class_id, $student_id);
+    redirect("students/class/$class_id");
   }
   
   function remove_from_class($class_id, $student_id) {
