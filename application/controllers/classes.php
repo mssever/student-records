@@ -95,6 +95,44 @@ class Classes extends CI_Controller {
     redirect('classes/attendance/'.$class_id);
   }
   
+  function ajax_update_attendance($attendance_id, $class_id) {
+    $this->load->model('Students_model');
+    $form = $this->input->post(NULL,TRUE);
+    //echo "<pre>".htmlspecialchars(print_r($form,TRUE),ENT_QUOTES|ENT_HTML5)."</pre>";
+    
+    if(strpos($attendance_id, 'X') === 0) {
+      $this->Students_model->add_class_attendance($class_id,$form['class_date'],array($form));
+    }
+    elseif($form['attendance'] != 'None') {
+      $this->Students_model->update_class_attendance($attendance_id, $form['attendance']);
+    }
+    else {
+      $this->Students_model->delete_class_attendance($attendance_id);
+    }
+    redirect("classes/attendance/$class_id");
+  }
+  
+  function grades($class_id) {
+    $this->load->model('Grade_model');
+    $this->load->model('Class_model');
+    $this->load->model('Students_model');
+    $this->load->helper('form');
+    
+    $data['title'] = 'Class Grades';
+    $data['class_id'] = $class_id;
+    $data['class_name'] = $this->Class_model->class_description_by_id($class_id);
+    $students = $this->Students_model->list_students_by_class($class_id);
+    $data['students'] = array();
+    for ($i = 0; $i < count($students); $i++) {
+      $data['students'][$i]['student'] = $students[$i];
+      $data['students'][$i]['grades'] = $this->Grade_model->get_grades_by_class_and_student($class_id, $students[$i]->id);
+    }
+    
+    $this->load->view('head', $data);
+    $this->load->view('classes/grades', $data);
+    $this->load->view('foot');
+  }
+  
   function _view_all() {
     $data['classes'] = $this->Class_model->list_classes();
     foreach ($data['classes'] as $key => $cls) {

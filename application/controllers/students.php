@@ -95,6 +95,8 @@ class Students extends CI_Controller {
   
   function _view_by_id($id) {
     $this->load->model('Class_model');
+    $this->load->model('Grade_model');
+    
     $data['title'] = 'View student';
     $data['id'] = $id;
     $data['student'] = $this->Students_model->list_students($id)[0];
@@ -105,6 +107,7 @@ class Students extends CI_Controller {
     foreach ($data['classes'] as $key => $class_id) {
       $data['classes_details'][$class_id] = $this->Class_model->class_description_by_id($class_id);
       $data['class_attendance'][$class_id] = $this->Students_model->get_attendance($id, $class_id);
+      $data['class_grades'][$class_id] = $this->Grade_model->get_grades_by_class_and_student($class_id, $id);
     }
     $this->load->view('head', $data);
     $this->load->view('students/view_individual', $data);

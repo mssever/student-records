@@ -26,6 +26,7 @@
       border-color: white;
     }
   </style>
+  <script type="text/javascript" src="/js/jquery-1.10.2.js"></script>
 </head>
 <body>
 <h1><?=anchor('', 'Student Records', array('title'=>'Go to the home page...'))?></h1>

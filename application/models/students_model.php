@@ -87,7 +87,7 @@ EOT;
   }
   
   function get_attendance($student_id, $class_id) {
-    $this->db->select('date, attendance');
+    $this->db->select('date, attendance, id');
     $this->db->where('class_id', $class_id)->where('student_id', $student_id);
     $this->db->order_by('date','asc');
     return $this->db->get('attendance')->result();
@@ -96,8 +96,19 @@ EOT;
   function add_class_attendance($class_id, $date, $data) {
     $sql="INSERT INTO attendance (class_id, student_id, date, attendance) VALUES (?, ?, ?, ?)";
     foreach ($data as $key => $student) {
+      //echo "<pre>".htmlspecialchars(print_r(array('$sql'=>$sql,'$class_id'=>$class_id,'$student["student_id"]'=>$student['student_id'],'$date'=>$date, '$student["attendance"]'=>$student['attendance'],'$data'=>$data),TRUE),ENT_QUOTES|ENT_HTML5)."</pre>";
       $this->db->query($sql, array($class_id, $student['student_id'], $date, $student['attendance']));
     }
+  }
+  
+  function update_class_attendance($attendance_id, $attendance) {
+    $sql="UPDATE attendance SET attendance.attendance = ? WHERE id = ?";
+    $this->db->query($sql,array($attendance, $attendance_id));
+  }
+  
+  function delete_class_attendance($attendance_id) {
+    $sql = "DELETE FROM attendance WHERE id = ?";
+    $this->db->query($sql,array($attendance_id));
   }
 }
 

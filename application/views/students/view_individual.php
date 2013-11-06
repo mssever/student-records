@@ -22,16 +22,49 @@
     <h4>Attendance</h4>
       <table>
         <tr>
+          <th>&nbsp;</th>
           <th>Date</th>
           <th>Status</th>
         </tr>
-        <? foreach ($class_attendance[$class_id] as $k2 => $item) { ?>
-          <tr>
+        <? $i=1;
+        foreach ($class_attendance[$class_id] as $k2 => $item) { ?>
+          <tr class="<?=($i % 2 == 0) ? 'even' : 'odd'?>">
+            <td><?=$i++?></td>
             <td><?=$item->date?></td>
             <td><?=$item->attendance?></td>
           </tr>
         <? } ?>
       </table>
       <h4>Grades</h4>
-        <p>Not implemented yet</p>
+      <table>
+        <tr>
+          <th>&nbsp;</th>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Score</th>
+          <th>Possible Score</th>
+          <th>Final test?</th>
+        </tr>
+        <?for ($i = 0; $i < count($class_grades[$class_id]); $i++) { 
+          $grades = $class_grades[$class_id][$i]; ?>
+          <tr class="<?=($i % 2 != 0) ? 'even' : 'odd'?>">
+            <td><?=$i+1?></td>
+            <td><?=$grades->date?></td>
+            <td><?=$grades->description?></td>
+            <td><?=$grades->score?></td>
+            <td><?=$grades->score_possible?></td>
+            <td><?=($grades->final_test == 0) ? 'No' : 'Yes'?></td>
+          </tr>
+        <? } ?>
+      </table>
+      <?=form_open("grades/add_single")?>
+        <?=form_hidden('student_id', $id)?>
+        <?=form_hidden('class_id', $class_id)?>
+        <?=form_input(array('name'=>'date','required'=>'required','type'=>'date'))?>
+        <?=form_input(array('name'=>'description','required'=>'required','placeholder'=>'Description'))?>
+        <?=form_input(array('name'=>'score','required'=>'required','type'=>'number','placeholder'=>"Score",'title'=>'Score'))?>
+        <?=form_input(array('name'=>'score_possible','required'=>'required','title'=>'Possible score','placeholder'=>'Possible score','type'=>'number','value'=>100,'min'=>1))?>
+        <?=form_dropdown('final_test',array('No','Yes'))?>
+        <?=form_submit('','Add grade')?>
+      </form>
 <? } ?>
