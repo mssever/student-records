@@ -30,6 +30,7 @@
     html += make_radio('attendance','Present',get_current(this) == 'Present');
     html += make_radio('attendance','Absent',get_current(this) == 'Absent');
     html += make_radio('attendance','Tardy',get_current(this) == 'Tardy');
+    html += make_radio('attendance','Early Departure',get_current(this) == 'Early Departure');
     html += '<input type="hidden" name="student_id" value="'+student_id+'">';
     html += '<input type="hidden" name="class_date" value="'+class_date+'">';
     html += '<button id="cancel_button">Cancel</button>';

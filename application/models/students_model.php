@@ -48,7 +48,11 @@ class Students_model extends CI_Model {
   
   function list_students_by_class($class_id) {
     $sql = <<<EOT
-SELECT `students`.`id` AS id, CONCAT(`students`.`last_name` , ', ', `students`.`first_name`) AS full_name, `students`.`first_name`, `students`.`nickname` 
+SELECT 
+  `students`.`id` AS id,
+  CONCAT(`students`.`last_name` , ', ', `students`.`first_name`) AS full_name,
+  `students`.`first_name`,
+  `students`.`nickname` 
 FROM `class_roster`, `students` 
 WHERE `class_roster`.`class_id` = ?
 AND `students`.`id` = `class_roster`.`student_id`

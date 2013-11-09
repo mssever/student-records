@@ -15,7 +15,7 @@ SELECT `grades`.`student_id`,
   CONCAT(students.last_name, ', ', students.first_name) AS full_name,
   students.nickname,
   grades.date,
-  grades.score,
+  CAST(grades.score AS char) * 1 AS score,
   grades.score_possible,
   grades.final_test,
   grades.description
@@ -34,7 +34,7 @@ SELECT `grades`.`class_id`,
   classes.time AS class_time,
   classes.term_begins,
   grades.date,
-  grades.score,
+  CAST(grades.score AS char) * 1 AS score,
   grades.score_possible,
   grades.final_test,
   grades.description
@@ -50,7 +50,7 @@ EOT;
 SELECT grades.class_id,
   grades.student_id,
   grades.date,
-  grades.score,
+  CAST(grades.score AS char) * 1 AS score,
   grades.score_possible,
   grades.final_test,
   grades.description
@@ -62,6 +62,71 @@ WHERE
   AND grades.student_id = students.id
 ORDER BY grades.date, grades.description, grades.id
 EOT;
-    return $this->db->query($sql, array($student_id, $class_id))->result();
+    return $result = $this->db->query($sql, array($student_id, $class_id))->result();
+  }
+  
+  function add_single_grade($data) {
+    // $data is an associative array with keys matching the columns in the database
+    $sql = <<<EOT
+INSERT INTO grades (
+  class_id,
+  student_id,
+  description,
+  date,
+  score,
+  score_possible,
+  final_test
+)
+VALUES (?, ?, ?, ?, ?, ?, ?)
+EOT;
+    $score = $this->validate_score($data['score']);
+    $this->db->query($sql, array($data['class_id'],$data['student_id'],$data['description'],$data['date'],$score,$data['score_possible'],$data['final_test']));
+    return $this->db->insert_id();
+  }
+  
+  function add_multiple_grades($class_id, $description, $date, $poss, $final, $scores_arr) {
+    $sql = <<<EOT
+INSERT INTO grades (
+  class_id,
+  student_id,
+  description,
+  date,
+  score,
+  score_possible,
+  final_test
+)
+VALUES 
+EOT;
+    $arr_str = array();
+    $arr_subs = array();
+    foreach ($scores_arr as $student_id => $score) {
+      $score = $this->validate_score($score);
+      $arr_str[] = "(?, ?, ?, ?, ?, ?, ?)";
+      $arr_subs = array_merge($arr_subs, array($class_id, $student_id, $description, $date, $score, $poss, $final));
+    }
+    $sql .= implode(', ', $arr_str);
+    $this->db->query($sql, $arr_subs);
+  }
+  
+  function update_single_grade($grade_id, $description, $date, $score, $poss, $final) {
+    $sql = <<<EOT
+UPDATE grades
+SET
+  description = ?,
+  date = ?,
+  score = ?,
+  score_possible = ?,
+  final_test = ?
+WHERE id = ?
+EOT;
+    $this->db->query($sql, array($description, $date, $this->validate_score($score), $poss, $final));
+  }
+  
+  function validate_score($score) {
+    $score = trim($score);
+    if (!is_numeric($score)) {
+      $score = 0;
+    }
+    return $score;
   }
 }

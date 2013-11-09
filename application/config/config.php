@@ -180,7 +180,7 @@ $config['directory_trigger']	= 'd'; // experimental not currently in use
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 2;
+$config['log_threshold'] = 1;
 
 /*
 |--------------------------------------------------------------------------
@@ -294,9 +294,9 @@ $config['global_xss_filtering'] = TRUE;
 | 'csrf_expire' = The number in seconds the token should expire.
 */
 $config['csrf_protection'] = TRUE;
-$config['csrf_token_name'] = 'csrf_test_name';
-$config['csrf_cookie_name'] = 'csrf_cookie_name';
-$config['csrf_expire'] = 7200;
+$config['csrf_token_name'] = 'security_1';
+$config['csrf_cookie_name'] = 'security_2';
+$config['csrf_expire'] = 172800; // 2 days
 
 /*
 |--------------------------------------------------------------------------

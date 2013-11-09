@@ -1,10 +1,23 @@
 <h2><?=anchor("classes/view/$class_id", $class_name)?></h2>
+<p><?=anchor("grades/add_by_class/$class_id", "Add new grades for this class »")?></p>
 <?=form_open("classes/add_class_grades")?>
+<? //echo "<pre>".htmlspecialchars(print_r($students,TRUE),ENT_QUOTES|ENT_HTML5)."</pre>";?>
+<?
+  $num_grades = 0;
+  foreach ($students as $key => $s) {
+    $num_grades = max(count($s['grades']), $num_grades);
+  }
+?>
 <table>
   <tr>
     <th>&nbsp;</th>
     <th>Name</th>
     <th>Nickname</th>
+<?
+    for ($i = 0; $i < $num_grades; $i++) {
+      echo "    <th>&nbsp;</th>\n";
+    }
+?>
   </tr>
   <? for ($i = 0; $i < count($students); $i++) {
     $i2 = $i+1; ?>

@@ -15,7 +15,7 @@
 <ul>
   <li><?=anchor('students/class/'.$id, "Manage the list of students in this class")?></li>
   <li><?=anchor('classes/attendance/'.$id, "Manage attendance for this class")?></li>
-  <li><?=anchor('classes/grades/'.$id, "Manage grades for this class")?></li>
+  <li><?=anchor('grades/view_class/'.$id, "Manage grades for this class")?></li>
   <li>Class options
     <ul>
       <li><?=anchor('classes/edit/'.$id, "Edit this class")?></li>

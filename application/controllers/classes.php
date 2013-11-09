@@ -75,7 +75,7 @@ class Classes extends CI_Controller {
     $data['title'] = 'Attendance';
     $data['class_description'] = $this->Class_model->class_description_by_id($class_id);
     $data['class_id'] = $class_id;
-    $data['attendance_options'] = array('Present'=>'P','Absent'=>'A','Tardy'=>'T');
+    $data['attendance_options'] = array('Present'=>'P','Absent'=>'A','Tardy'=>'T', 'Early Departure'=>'E');
     $data['attendance_dates'] = $this->Class_model->get_attendance_dates($class_id);
     $data['attendance_dummy'] = new AttendanceDummyClass();
     
@@ -110,27 +110,6 @@ class Classes extends CI_Controller {
       $this->Students_model->delete_class_attendance($attendance_id);
     }
     redirect("classes/attendance/$class_id");
-  }
-  
-  function grades($class_id) {
-    $this->load->model('Grade_model');
-    $this->load->model('Class_model');
-    $this->load->model('Students_model');
-    $this->load->helper('form');
-    
-    $data['title'] = 'Class Grades';
-    $data['class_id'] = $class_id;
-    $data['class_name'] = $this->Class_model->class_description_by_id($class_id);
-    $students = $this->Students_model->list_students_by_class($class_id);
-    $data['students'] = array();
-    for ($i = 0; $i < count($students); $i++) {
-      $data['students'][$i]['student'] = $students[$i];
-      $data['students'][$i]['grades'] = $this->Grade_model->get_grades_by_class_and_student($class_id, $students[$i]->id);
-    }
-    
-    $this->load->view('head', $data);
-    $this->load->view('classes/grades', $data);
-    $this->load->view('foot');
   }
   
   function _view_all() {
