@@ -30,7 +30,21 @@ class Grades extends CI_Controller {
     $data['students'] = array();
     for ($i = 0; $i < count($students); $i++) {
       $data['students'][$i]['student'] = $students[$i];
-      $data['students'][$i]['grades'] = $this->Grade_model->get_grades_by_class_and_student($class_id, $students[$i]->id);
+      $grades = $this->Grade_model->get_grades_by_class_and_student($class_id, $students[$i]->id);
+      $data['students'][$i]['grades'] = $grades;
+      $g = $this->Grade_model->grade_breakdown($grades);
+      $reg_grades = $g['regular_scores'];
+      $reg_possible = $g['regular_scores_total'];
+      $final_grades = $g['final_scores'];
+      $final_possible = $g['final_scores_total'];
+      $data['students'][$i]['score_regular'] = $this->Grade_model->calculate_percentage($reg_grades, $reg_possible);
+      $data['students'][$i]['score_final'] = $this->Grade_model->calculate_percentage($final_grades, $final_possible);
+      $data['students'][$i]['score_grand_total'] = $this->Grade_model->calculate_final_average(
+        array_sum($reg_grades),
+        array_sum($reg_possible),
+        array_sum($final_grades),
+        array_sum($final_possible)
+      );
     }
     
     $this->load->view('head', $data);

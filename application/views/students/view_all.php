@@ -16,7 +16,7 @@
       <td><?=anchor('students/view/'.$student->id, $student->full_name)?></td>
       <td><?=$student->nickname?></td>
       <td>&nbsp;<!-- Insert Classes Here --></td>
-      <td><?=anchor('students/edit/'.$student->id,'edit')?> <?=anchor('students/delete/'.$student->id,'delete')?></td>
+      <td><?=anchor('students/view/'.$student->id,'edit')?> <?=anchor('students/delete/'.$student->id,'delete')?></td>
     </tr>
   <? } ?>
 </table>

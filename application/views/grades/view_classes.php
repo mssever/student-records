@@ -13,6 +13,7 @@
     <th>&nbsp;</th>
     <th>Name</th>
     <th>Nickname</th>
+    <th>Grades</th>
 <?
     for ($i = 0; $i < $num_grades; $i++) {
       echo "    <th>&nbsp;</th>\n";
@@ -25,6 +26,22 @@
       <td><?=$i2?></td>
       <td><?=$students[$i]['student']->full_name?></td>
       <td><?=anchor("students/view/".$students[$i]['student']->id,$students[$i]['student']->nickname)?></td>
+      <td>
+        <table>
+          <tr>
+            <th>Reg.</th>
+            <td><?=$students[$i]['score_regular']?>%</td>
+          </tr>
+          <tr>
+            <th>Final</th>
+            <td><?=$students[$i]['score_final']?>%</td>
+          </tr>
+          <tr>
+            <th>Total</th>
+            <td><b><?=$students[$i]['score_grand_total']?>%</b></td>
+          </tr>
+        </table>
+      </td>
       <? for ($j = 0; $j < count($students[$i]['grades']); $j++) { ?>
         <? $grades = $students[$i]['grades'][$j]; ?>
         <td>

@@ -82,7 +82,13 @@ EOT;
   
   function list_student_classes($student_id) {
     $result = array();
-    $sql = "SELECT DISTINCT class_id AS id FROM class_roster WHERE student_id = ? ORDER BY class_id DESC";
+    $sql = <<<EOT
+SELECT DISTINCT class_roster.class_id AS id
+FROM class_roster, classes
+WHERE
+  class_roster.student_id = ? AND class_roster.class_id = classes.id
+ORDER BY classes.term_begins DESC, classes.time ASC, classes.type ASC
+EOT;
     $class_ids = $this->db->query($sql, array($student_id))->result();
     foreach ($class_ids as $key => $class_id) {
       $result[] = $class_id->id;

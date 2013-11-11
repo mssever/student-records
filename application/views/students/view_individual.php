@@ -57,6 +57,19 @@
           </tr>
         <? } ?>
       </table>
+      <div>&nbsp;</div>
+      <table>
+        <tr>
+          <th>Regular Percentage</th>
+          <th>Final Test Percentage</th>
+          <th>Grand Total</th>
+        </tr>
+        <tr>
+          <td><?=$class_average[$class_id]['regular']?>%</td>
+          <td><?=$class_average[$class_id]['final']?>%</td>
+          <td><b><?=$class_average[$class_id]['total']?>%</b></td>
+        </tr>
+      </table>
       <?=form_open("grades/add_single")?>
         <?=form_hidden('student_id', $id)?>
         <?=form_hidden('class_id', $class_id)?>

@@ -129,4 +129,76 @@ EOT;
     }
     return $score;
   }
+  
+  function calculate_percentage($scores_arr, $possible_arr) {
+    if (count($scores_arr) != count($possible_arr)) {
+      echo "<pre>".htmlspecialchars(print_r(array('$scores_arr'=>$scores_arr,'$possible_arr'=>$possible_arr),TRUE),ENT_QUOTES|ENT_HTML5)."</pre>";
+      die('Both arrays must have the same number of elements!');
+    }
+    //echo "<pre>".htmlspecialchars(print_r(array('grade_model line 138',$scores_arr, $possible_arr),TRUE),ENT_QUOTES|ENT_HTML5)."</pre>";
+    $scores_arr[] = 0;
+    $possible_arr[] = 0;
+    $scores = array_sum($scores_arr);
+    $possible = array_sum($possible_arr);
+    if ($possible == 0) {
+      return 0;
+    }
+    return round((array_sum($scores_arr) / array_sum($possible_arr)) * 100, 1);
+  }
+  
+  function calculate_final_average(
+       $regular_scores_tot,
+       $regular_scores_tot_poss,
+       $final_scores_tot,
+       $final_scores_tot_poss
+    ) {
+    if (is_array($regular_scores_tot)) {
+      $regular_scores_tot[] = 0;
+      $regular_scores_tot = array_sum($regular_scores_tot);
+    }
+    if (is_array($regular_scores_tot_poss)) {
+      $regular_scores_tot_poss[] = 0;
+      $regular_scores_tot_poss = array_sum($regular_scores_tot_poss);
+    }
+    if (is_array($final_scores_tot)) {
+      $final_scores_tot[] = 0;
+      $final_scores_tot = array_sum($final_scores_tot);
+    }
+    if (is_array($final_scores_tot_poss)) {
+      $final_scores_tot_poss[] = 0;
+      $final_scores_tot_poss = array_sum($final_scores_tot_poss);
+    }
+    if ($final_scores_tot_poss == 0) {
+      return $this->calculate_percentage(array($regular_scores_tot), array($regular_scores_tot_poss));
+    }
+    $factor = $regular_scores_tot_poss / $final_scores_tot_poss;
+    $final_scores_tot *= $factor;
+    return $this->calculate_percentage(
+      array($regular_scores_tot, $final_scores_tot),
+      array($regular_scores_tot_poss, $regular_scores_tot_poss)
+    );
+  }
+  
+  function grade_breakdown($grades) {
+    // $grades is an array containing query result objects for one student/one class
+    $reg[] = 0;
+    $reg_tot[] = 0;
+    $final[] = 0;
+    $final_tot[] = 0;
+    foreach ($grades as $key => $grade) {
+      if ($grade->final_test) {
+        $final[] = $grade->score;
+        $final_tot[] = $grade->score_possible;
+      }
+      else {
+        $reg[] = $grade->score;
+        $reg_tot[] = $grade->score_possible;
+      }
+    }
+    return array(
+      'regular_scores' => $reg,
+      'regular_scores_total' => $reg_tot,
+      'final_scores' => $final,
+      'final_scores_total' => $final_tot);
+  }
 }

@@ -34,7 +34,7 @@
       <td><?=$i++?></td>
       <td><?=$student->full_name?></td>
       <td><?=anchor('students/view/'.$student->id, $student->nickname)?></td>
-      <td><input type="text" name="score[<?=$student->id?>]" value="0" tabindex="<?=$i+3?>"></td>
+      <td><input type="text" name="score[<?=$student->id?>]" value="" tabindex="<?=$i+3?>"></td>
     </tr>
   <? } ?>
 </table>

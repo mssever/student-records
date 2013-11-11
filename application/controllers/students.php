@@ -66,6 +66,9 @@ class Students extends CI_Controller {
   function edit() {
     $this->load->model('Students_model');
     $form = $this->input->post(NULL,TRUE);
+    if (count($form) < 4) {
+      die("Bugs galore!");
+    }
     $id = $form['id'];
     $data['first_name'] = $form['first_name'];
     $data['last_name'] = $form['last_name'];
@@ -108,7 +111,16 @@ class Students extends CI_Controller {
       $data['classes_details'][$class_id] = $this->Class_model->class_description_by_id($class_id);
       $data['class_attendance'][$class_id] = $this->Students_model->get_attendance($id, $class_id);
       $data['class_grades'][$class_id] = $this->Grade_model->get_grades_by_class_and_student($class_id, $id);
+      $grades = $this->Grade_model->grade_breakdown($data['class_grades'][$class_id]);
+      $data['class_average'][$class_id]['regular'] = $this->Grade_model->calculate_percentage(
+        $grades['regular_scores'], $grades['regular_scores_total']);
+      $data['class_average'][$class_id]['final'] = $this->Grade_model->calculate_percentage(
+        $grades['final_scores'], $grades['final_scores_total']);
+      $data['class_average'][$class_id]['total'] = $this->Grade_model->calculate_final_average(
+        $grades['regular_scores'], $grades['regular_scores_total'],
+        $grades['final_scores'], $grades['final_scores_total']);
     }
+    
     $this->load->view('head', $data);
     $this->load->view('students/view_individual', $data);
     $this->load->view('foot');

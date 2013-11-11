@@ -50,6 +50,7 @@ h3 {
 table {
   border: solid #0057a8 4px;
   border-collapse: collapse;
+  background: #eef;
 }
 tr.even {
   background: #ccf;
