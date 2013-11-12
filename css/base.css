@@ -64,4 +64,6 @@ th {
   background: #0057a8;
   color: #eef;
   border-color: #eef;
+  text-align: center;
+  vertical-align: bottom;
 }

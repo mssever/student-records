@@ -104,9 +104,13 @@ EOT;
   }
   
   function add_class_attendance($class_id, $date, $data) {
+    $sql_test='SELECT COUNT(id) AS num FROM attendance WHERE date = ? AND student_id = ?';
     $sql="INSERT INTO attendance (class_id, student_id, date, attendance) VALUES (?, ?, ?, ?)";
     foreach ($data as $key => $student) {
       //echo "<pre>".htmlspecialchars(print_r(array('$sql'=>$sql,'$class_id'=>$class_id,'$student["student_id"]'=>$student['student_id'],'$date'=>$date, '$student["attendance"]'=>$student['attendance'],'$data'=>$data),TRUE),ENT_QUOTES|ENT_HTML5)."</pre>";
+      if($this->db->query($sql_test, array($date, $student['student_id']))->row()->num > 0) {
+        die("Duplicate attendance entry!");
+      }
       $this->db->query($sql, array($class_id, $student['student_id'], $date, $student['attendance']));
     }
   }

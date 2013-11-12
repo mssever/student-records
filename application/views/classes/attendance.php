@@ -67,7 +67,7 @@
     }
     foreach ($dates as $key => $date) {
       ?>
-      <th><nobr><?=$date?></nobr></th>
+      <th><?=date('l', strtotime($date))?><br><nobr><?=$date?></nobr></th>
     <? } ?>
     <th>New</th>
     <th>Nickname</th>
@@ -108,6 +108,6 @@
 </table>
 <p><?=form_label("Attendance date: ", 'date')?>
 <?=form_input(array('name'=>'date','required'=>'required','type'=>'date','tabindex'=>$i++))?></p>
-<p><?=form_submit('', 'Add attendance', 'tabindex="'.$i++.'"')?>
+<p><?=form_submit('', 'Add attendance', 'tabindex="'.$i++.'" onsubmit="this.disabled = true"')?>
 <?=form_reset('', 'Start over', 'tabindex="'.$i++.'"')?></p>
 </form>

@@ -79,6 +79,7 @@ class Classes extends CI_Controller {
     $data['attendance_dates'] = $this->Class_model->get_attendance_dates($class_id);
     $data['attendance_dummy'] = new AttendanceDummyClass();
     
+    //echo "<pre>".htmlspecialchars(print_r($data,TRUE),ENT_QUOTES|ENT_HTML5)."</pre>";
     $this->load->view('head', $data);
     $this->load->view('classes/attendance', $data);
     $this->load->view('foot');
