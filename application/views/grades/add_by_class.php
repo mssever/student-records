@@ -1,7 +1,7 @@
 <h2><?=$class_name?></h2>
 <?=form_open("grades/add_by_class_processor")?>
 <?=form_hidden('class_id',$class_id)?>
-<? $i = 1 ?>
+<?php $i = 1 ?>
 <table>
   <tr>
     <th>Date</th>
@@ -29,14 +29,14 @@
     <th>Nickname</th>
     <th>Score</th>
   </tr>
-  <? foreach ($students as $key => $student) { ?>
+  <?php foreach ($students as $key => $student) { ?>
     <tr class="<?=($i % 2 == 0) ? 'even' : 'odd'?>">
       <td><?=$i++?></td>
       <td><?=$student->full_name?></td>
       <td><?=anchor('students/view/'.$student->id, $student->nickname)?></td>
       <td><input type="text" name="score[<?=$student->id?>]" value="" tabindex="<?=$i+3?>"></td>
     </tr>
-  <? } ?>
+  <?php } ?>
 </table>
 <div>&nbsp;</div>
 <input type="submit" tabindex="<?=$i+3?>">

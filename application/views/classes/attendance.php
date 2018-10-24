@@ -31,6 +31,7 @@
     html += make_radio('attendance','Absent',get_current(this) == 'Absent');
     html += make_radio('attendance','Tardy',get_current(this) == 'Tardy');
     html += make_radio('attendance','Early Departure',get_current(this) == 'Early Departure');
+    html += make_radio('attendance','Tardy/Early Departure',get_current(this) == 'Tardy/Early Departure');
     html += '<input type="hidden" name="student_id" value="'+student_id+'">';
     html += '<input type="hidden" name="class_date" value="'+class_date+'">';
     html += '<button id="cancel_button">Cancel</button>';
@@ -60,7 +61,7 @@
     <th>&nbsp;</th>
     <th>Name</th>
     <th>Nickname</th>
-    <?
+    <?php
     $dates = array();
     foreach ($attendance_dates as $key => $date_obj) { 
       $dates[] = $date_obj->date;
@@ -68,19 +69,19 @@
     foreach ($dates as $key => $date) {
       ?>
       <th><?=date('l', strtotime($date))?><br><nobr><?=$date?></nobr></th>
-    <? } ?>
+    <?php } ?>
     <th>New</th>
     <th>Nickname</th>
     <th>Name</th>
   </tr>
-  <? $i = 1; $blank_counter = 0; ?>
-  <? foreach ($students as $key => $student) { 
+  <?php $i = 1; $blank_counter = 0; ?>
+  <?php foreach ($students as $key => $student) { 
     $id = $student['id']; ?>
     <tr class="attendance <?=($i % 2 == 0) ? 'even' : 'odd'?>">
       <td><?=$i?></td>
       <td><nobr><?=$student['full_name']?></nobr></td>
       <td><nobr><?=anchor("students/view/$id",$student['nickname'])?></nobr></td>
-      <? if (!is_array($student['attendance'])) {
+      <?php if (!is_array($student['attendance'])) {
         $student['attendance'] = array($student['attendance']);
       }
       if (count($student['attendance']) == 0) {
@@ -89,22 +90,22 @@
       while (count($student['attendance']) < count($dates)) {
         $student['attendance'][] = $student['attendance'][0];
       } ?>
-  <? $k = 0;
+  <?php $k = 0;
      for ($j = 0; $j < count($dates); $j++) { 
         $item = $student['attendance'][$k]; ?>
-        <? if ($item->date == $dates[$j]) { ?>
-          <td id="<?=$item->id?>" class="a-box"><b style="<? if($item->attendance == 'Present') echo 'color:green;'; elseif ($item->attendance == 'Absent') echo 'color:red;';?>"><?=$item->attendance?></b></td>
-        <? } else { 
+        <?php if ($item->date == $dates[$j]) { ?>
+          <td id="<?=$item->id?>" class="a-box"><b style="<?php if($item->attendance == 'Present') echo 'color:green;'; elseif ($item->attendance == 'Absent') echo 'color:red;';?>"><?=$item->attendance?></b></td>
+        <?php } else { 
           $k--; ?>
           <td id="X<?=$blank_counter++?>" class="a-box" student_id="<?=$id?>" date="<?=$dates[$j]?>">&nbsp;</td>
-        <? } ?>
-      <? $k++;
+        <?php } ?>
+      <?php $k++;
       } ?>
       <td><?=form_dropdown("student[$id]", $attendance_options, 'Present', 'tabindex="'.$i++.'"')?></td>
-      <td><nobr><?=$student['nickname']?></nobr></td>
+      <td><nobr><?=anchor("students/view/$id",$student['nickname'])?></nobr></td>
       <td><nobr><?=$student['full_name']?></nobr></td>
     </tr>
-  <? } ?>
+  <?php } ?>
 </table>
 <p><?=form_label("Attendance date: ", 'date')?>
 <?=form_input(array('name'=>'date','required'=>'required','type'=>'date','tabindex'=>$i++))?></p>

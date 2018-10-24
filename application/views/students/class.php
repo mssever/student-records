@@ -1,4 +1,4 @@
-<h2><?=$class?></h2>
+<h2><?=anchor("classes/view/$class_id",$class)?></h2>
 <table>
   <tr>
     <th>&nbsp;</th>
@@ -6,15 +6,15 @@
     <th>Nickname</th>
     <th>&nbsp;</th>
   </tr>
-  <? $i = 1; ?>
-  <? foreach ($students as $key => $student) { ?>
+  <?php $i = 1; ?>
+  <?php foreach ($students as $key => $student) { ?>
     <tr class="<?=($i % 2 == 0) ? 'even' : 'odd'?>">
       <td><?=$i++?></td>
       <td><?=$student->full_name?></td>
       <td><?=anchor('students/view/'.$student->id, $student->nickname)?></td>
       <td><?=anchor("students/remove_from_class/$class_id/".$student->id, 'remove from class', 'onclick="return confirm(\'Are you sure you want to remove '.$student->full_name.'?\');"')?></td>
     </tr>
-  <? } ?>
+  <?php } ?>
 </table>
 <p><?=anchor("classes/attendance/$class_id", "Attendance »")?></p>
 <h2>Add existing student to class</h2>

@@ -75,7 +75,7 @@ class Classes extends CI_Controller {
     $data['title'] = 'Attendance';
     $data['class_description'] = $this->Class_model->class_description_by_id($class_id);
     $data['class_id'] = $class_id;
-    $data['attendance_options'] = array('Present'=>'P','Absent'=>'A','Tardy'=>'T', 'Early Departure'=>'E');
+    $data['attendance_options'] = array('Present'=>'P','Absent'=>'A','Tardy'=>'T', 'Early Departure'=>'E','Tardy/Early Departure'=>'T/E');
     $data['attendance_dates'] = $this->Class_model->get_attendance_dates($class_id);
     $data['attendance_dummy'] = new AttendanceDummyClass();
     

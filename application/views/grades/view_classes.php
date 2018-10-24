@@ -1,8 +1,8 @@
 <h2><?=anchor("classes/view/$class_id", $class_name)?></h2>
 <p><?=anchor("grades/add_by_class/$class_id", "Add new grades for this class »")?></p>
 <?=form_open("classes/add_class_grades")?>
-<? //echo "<pre>".htmlspecialchars(print_r($students,TRUE),ENT_QUOTES|ENT_HTML5)."</pre>";?>
-<?
+<?php //echo "<pre>".htmlspecialchars(print_r($students,TRUE),ENT_QUOTES|ENT_HTML5)."</pre>";?>
+<?php
   $num_grades = 0;
   foreach ($students as $key => $s) {
     $num_grades = max(count($s['grades']), $num_grades);
@@ -14,13 +14,13 @@
     <th>Name</th>
     <th>Nickname</th>
     <th>Grades</th>
-<?
+<?php
     for ($i = 0; $i < $num_grades; $i++) {
       echo "    <th>&nbsp;</th>\n";
     }
 ?>
   </tr>
-  <? for ($i = 0; $i < count($students); $i++) {
+  <?php for ($i = 0; $i < count($students); $i++) {
     $i2 = $i+1; ?>
     <tr class="<?=($i2 % 2 == 0) ? 'even' : 'odd'?>">
       <td><?=$i2?></td>
@@ -42,21 +42,22 @@
           </tr>
         </table>
       </td>
-      <? for ($j = 0; $j < count($students[$i]['grades']); $j++) { ?>
-        <? $grades = $students[$i]['grades'][$j]; ?>
+      <?php for ($j = 0; $j < count($students[$i]['grades']); $j++) { ?>
+        <?php $grades = $students[$i]['grades'][$j]; ?>
         <td>
           <table>
             <tr>
               <th>Date</th>
-              <td><?=$grades->date?></td>
+              <td colspan="2"><?=$grades->date?></td>
             </tr>
             <tr>
               <th>Desc.</th>
-              <td><?=$grades->description?></td>
+              <td colspan="2"><?=$grades->description?></td>
             </tr>
             <tr>
               <th>Score</th>
               <td><?=$grades->score?></td>
+              <td rowspan="2"><?=round($grades->score / $grades->score_possible * 100,2)?>%
             </tr>
             <tr>
               <th>Poss.</th>
@@ -64,12 +65,12 @@
             </tr>
             <tr>
               <th>F.T.?</th>
-              <td><?=($grades->final_test == 0) ? 'No' : 'Yes'?></td>
+              <td colspan="2"><?=($grades->final_test == 0) ? 'No' : 'Yes'?></td>
             </tr>
           </table>
         </td>
-      <? } ?>
+      <?php } ?>
     </tr>
-  <? } ?>
+  <?php } ?>
 </table>
 </form>

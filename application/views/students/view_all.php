@@ -1,6 +1,6 @@
-<? if ($add_success) { ?>
+<?php if ($add_success) { ?>
   <h2><?=$add_success?></h2>
-<? } ?>
+<?php } ?>
 <table>
   <tr>
     <th>&nbsp;</th>
@@ -9,8 +9,8 @@
     <th>Classes</th>
     <th>Operations</th>
   </tr>
-  <? $i = 1; ?>
-  <? foreach ($students as $key => $student) { ?>
+  <?php $i = 1; ?>
+  <?php foreach ($students as $key => $student) { ?>
     <tr class="<?=($i % 2 == 0) ? 'even' : 'odd'?>">
       <td><?=$i++?></td>
       <td><?=anchor('students/view/'.$student->id, $student->full_name)?></td>
@@ -18,7 +18,7 @@
       <td>&nbsp;<!-- Insert Classes Here --></td>
       <td><?=anchor('students/view/'.$student->id,'edit')?> <?=anchor('students/delete/'.$student->id,'delete')?></td>
     </tr>
-  <? } ?>
+  <?php } ?>
 </table>
 
 <h2>Add Student</h2>

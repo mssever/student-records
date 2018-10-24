@@ -17,7 +17,7 @@
 </form>
 
 <h2>Class records</h2>
-<? foreach ($classes as $k1 => $class_id) { ?>
+<?php foreach ($classes as $k1 => $class_id) { ?>
   <h3><?=anchor("classes/view/$class_id", $classes_details[$class_id])?></h3>
     <h4>Attendance</h4>
       <table>
@@ -26,14 +26,14 @@
           <th>Date</th>
           <th>Status</th>
         </tr>
-        <? $i=1;
+        <?php $i=1;
         foreach ($class_attendance[$class_id] as $k2 => $item) { ?>
           <tr class="<?=($i % 2 == 0) ? 'even' : 'odd'?>">
             <td><?=$i++?></td>
             <td><?=$item->date?></td>
             <td><?=$item->attendance?></td>
           </tr>
-        <? } ?>
+        <?php } ?>
       </table>
       <h4>Grades</h4>
       <table>
@@ -43,9 +43,10 @@
           <th>Description</th>
           <th>Score</th>
           <th>Possible Score</th>
+          <th>Percentage</th>
           <th>Final test?</th>
         </tr>
-        <?for ($i = 0; $i < count($class_grades[$class_id]); $i++) { 
+        <?php for ($i = 0; $i < count($class_grades[$class_id]); $i++) { 
           $grades = $class_grades[$class_id][$i]; ?>
           <tr class="<?=($i % 2 != 0) ? 'even' : 'odd'?>">
             <td><?=$i+1?></td>
@@ -53,9 +54,10 @@
             <td><?=$grades->description?></td>
             <td><?=$grades->score?></td>
             <td><?=$grades->score_possible?></td>
+            <td><?=round($grades->score / $grades->score_possible * 100, 2)?>%</td>
             <td><?=($grades->final_test == 0) ? 'No' : 'Yes'?></td>
           </tr>
-        <? } ?>
+        <?php } ?>
       </table>
       <div>&nbsp;</div>
       <table>
@@ -80,4 +82,4 @@
         <?=form_dropdown('final_test',array('No','Yes'))?>
         <?=form_submit('','Add grade')?>
       </form>
-<? } ?>
+<?php } ?>
