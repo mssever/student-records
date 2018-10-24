@@ -12,3 +12,4 @@ application/logs/*
 .bzr*
 *~
 *.deb
+tmp/*
